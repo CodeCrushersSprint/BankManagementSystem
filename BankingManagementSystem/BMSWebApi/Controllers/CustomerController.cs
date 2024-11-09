@@ -11,6 +11,7 @@ namespace BMSWebApi.Controllers
     public class CustomerController : ControllerBase
     {
         private readonly BMSDbContext _context;
+        private readonly ILogger<CustomerController> _logger;
         public CustomerController(BMSDbContext context)
         {
             _context = context;
@@ -24,7 +25,9 @@ namespace BMSWebApi.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Customer>>> GetCustomers()
         {
+            _logger.LogInformation($"Fetched all the customers");
             return await _context.Customers.ToListAsync();
+
         }
 
 
@@ -38,6 +41,7 @@ namespace BMSWebApi.Controllers
         public async Task<ActionResult<Customer>> GetCustomerById(int id)
         {
             var customer = await _context.Customers.FindAsync(id);
+            _logger.LogInformation($"Fetched the customer by {id}");
             if (customer == null)
             {
                 return NotFound();
@@ -78,7 +82,7 @@ namespace BMSWebApi.Controllers
         /// <returns>The updated new record details</returns>
 
         [HttpPost]
-        public async Task<ActionResult<Account>> PostCustomer(CustomerDTO customerDTO)
+        public async Task<ActionResult<Customer>> PostCustomer(CustomerDTO customerDTO)
         {
             Customer customer = new Customer();
             customer.CustomerId = customerDTO.CustomerId;

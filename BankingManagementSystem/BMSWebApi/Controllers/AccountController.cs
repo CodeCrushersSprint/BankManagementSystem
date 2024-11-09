@@ -153,6 +153,14 @@ namespace BMSWebApi.Controllers
         public async Task<IActionResult> DeleteAccount(int id)
         {
             //Write your logic here
+            var account = await _context.Accounts.FindAsync(id);
+            if (account == null)
+            {
+                return NotFound();
+            }
+
+            _context.Accounts.Remove(account);
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
