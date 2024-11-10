@@ -84,6 +84,7 @@ namespace BMSWebApi.Controllers
             try
             {
                 await _context.SaveChangesAsync();
+                _logger.LogInformation($"Updated the account of {id}");
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -124,6 +125,7 @@ namespace BMSWebApi.Controllers
             try
             {
                 await _context.SaveChangesAsync();
+                _logger.LogInformation($"Created the account of {account.AccountId}");
             }
             catch (DbUpdateException)
             {
@@ -161,6 +163,7 @@ namespace BMSWebApi.Controllers
 
             _context.Accounts.Remove(account);
             await _context.SaveChangesAsync();
+            _logger.LogInformation($"Removed the account of {id}");
 
             return NoContent();
         }

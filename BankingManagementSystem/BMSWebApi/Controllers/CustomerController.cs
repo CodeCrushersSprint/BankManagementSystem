@@ -19,9 +19,9 @@ namespace BMSWebApi.Controllers
 
 
         /// <summary>
-        /// This action is to get all the accounts list
+        /// This action is to get all the customers list
         /// </summary>
-        /// <returns>list of accounts</returns>
+        /// <returns>list of customers</returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Customer>>> GetCustomers()
         {
@@ -71,6 +71,29 @@ namespace BMSWebApi.Controllers
             customer.RoleId = customerDTO.RoleId;
 
             //Write your logic here
+            if (id != customer.CustomerId)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(customer).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+                _logger.LogInformation($"Updated the customer of {customer.CustomerId}");
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!CustomerExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
 
             return NoContent();
         }
@@ -96,6 +119,25 @@ namespace BMSWebApi.Controllers
 
             //Write your logic here
 
+            _context.Customers.Add(customer);
+            try
+            {
+                await _context.SaveChangesAsync();
+                _logger.LogInformation($"Created the customer with {customer.CustomerId}");
+            }
+            catch (DbUpdateException)
+            {
+                if (CustomerExists(customer.CustomerId))
+                {
+                    return Conflict();
+                }
+                else
+                {
+                    throw;
+                }
+
+            }
+
 
             return CreatedAtAction("GetCustomerById", new { id = customer.CustomerId, customer });
         }
@@ -110,6 +152,15 @@ namespace BMSWebApi.Controllers
         public async Task<IActionResult> DeleteCustomer(int id)
         {
             //Write your logic here
+            var customer = await _context.Customers.FindAsync(id);
+            if (customer == null)
+            {
+                return NotFound();
+            }
+
+            _context.Customers.Remove(customer);
+            await _context.SaveChangesAsync();
+            _logger.LogInformation($"Deleted the customer of {id}");
 
             return NoContent();
         }
