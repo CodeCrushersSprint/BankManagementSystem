@@ -13,10 +13,6 @@ namespace BMSWebApi.Controllers
         private readonly BMSDbContext _context;
         private readonly ILogger<TransactionController> _logger;
 
-        public TransactionController()
-        {
-            
-        }
         public TransactionController(BMSDbContext context, ILogger<TransactionController> logger)
         {
             _context = context;

@@ -12,9 +12,10 @@ namespace BMSWebApi.Controllers
     {
         private readonly BMSDbContext _context;
         private readonly ILogger<CustomerController> _logger;
-        public CustomerController(BMSDbContext context)
+        public CustomerController(BMSDbContext context, ILogger<CustomerController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
 
