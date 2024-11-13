@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BMSWebApi.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace BMSWebApi.Model
 {
@@ -18,6 +19,8 @@ namespace BMSWebApi.Model
         public virtual DbSet<Transaction> Transactions { get; set; }
         public virtual DbSet<Loan> Loans { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
+        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Admin> Admins { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseSqlServer("Data Source=.\\sqlexpress;Initial Catalog=BMSDb;Integrated Security=True;TrustServerCertificate=True");

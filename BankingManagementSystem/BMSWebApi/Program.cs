@@ -28,9 +28,19 @@ namespace BMSWebApi
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddDbContext<BMSDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAllOrigins",
+                    policyBuilder => policyBuilder.AllowAnyOrigin()
+                                                  .AllowAnyMethod()
+                                                  .AllowAnyHeader());
+            });
 
 
             var app = builder.Build();
+
+            app.UseCors("AllowAllOrigins");
+
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

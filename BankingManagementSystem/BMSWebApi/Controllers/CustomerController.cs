@@ -140,7 +140,7 @@ namespace BMSWebApi.Controllers
             }
 
 
-            return CreatedAtAction("GetCustomerById", new { id = customer.CustomerId, customer });
+            return CreatedAtAction("GetCustomerById", new { id = customer.CustomerId }, customer );
         }
 
         /// <summary>
